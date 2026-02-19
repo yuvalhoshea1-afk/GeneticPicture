@@ -17,7 +17,7 @@ uint32_t xorshift32(uint32_t *state) {
 
 
 void mutate(Individual* ind, int width, int height, int stuck_level, int triangle_amnt) {
-    // Choose a random number of triangles to mutate (1 to 3)
+    // Choose a random number of triangles to mutate 
     int max_mutate = triangle_amnt / 10;
     int num_to_mutate = (xorshift32(&ind->rng_state) % max_mutate) + 1;
     num_to_mutate += (stuck_level > 500) ? max_mutate : 0;
@@ -45,8 +45,8 @@ void mutate(Individual* ind, int width, int height, int stuck_level, int triangl
             t->a = CLAMP(t->a + (int)(xorshift32(&ind->rng_state) % 21) - 10, 10, 200);
         }
         else if (type < 85) {
-            // 3. THE "SHOTGUN" (Complete triangle reset)
-            // This is vital to escape local optima!
+            // 3. Complete triangle reset
+            // This is vital to escape from being stuck sometimes
             t->x1 = xorshift32(&ind->rng_state) % width;
             t->y1 = xorshift32(&ind->rng_state) % height;
             t->x2 = t->x1 + (int)(xorshift32(&ind->rng_state) % 60) - 30;
@@ -59,7 +59,7 @@ void mutate(Individual* ind, int width, int height, int stuck_level, int triangl
             t->a = (xorshift32(&ind->rng_state) % 100) + 20;
         }
         else {
-            // 4. Z-ORDER SWAP
+            // 4. Swaping order 
             int other = xorshift32(&ind->rng_state) % ind->num_triangles;
             Triangle temp = ind->genes[t_idx];
             ind->genes[t_idx] = ind->genes[other];
@@ -75,11 +75,11 @@ void create_random_individual(int num_triangles, Individual* ind, int w, int h) 
     for (int i = 0; i < num_triangles; i++) {
         Triangle* t = &ind->genes[i];
         
-        /* Position: Uniform distribution across the whole canvas */
+        // Position: Uniform distribution across the whole canvas 
         t->x1 = xorshift32(&ind->rng_state) % w;
         t->y1 = xorshift32(&ind->rng_state) % h;
 
-        /* Size: Mix of big and small triangles */
+        // Size: Mix of big and small triangles 
         int size_range = (xorshift32(&ind->rng_state) % 100 < 10) ? w/2 : 30; 
         
         t->x2 = t->x1 + (int)(xorshift32(&ind->rng_state) % size_range) - (size_range/2);
@@ -87,12 +87,12 @@ void create_random_individual(int num_triangles, Individual* ind, int w, int h) 
         t->x3 = t->x1 + (int)(xorshift32(&ind->rng_state) % size_range) - (size_range/2);
         t->y3 = t->y1 + (int)(xorshift32(&ind->rng_state) % size_range) - (size_range/2);
 
-        /* Color: Completely random */
+        // Color: Completely random 
         t->r = xorshift32(&ind->rng_state) % 256;
         t->g = xorshift32(&ind->rng_state) % 256;
         t->b = xorshift32(&ind->rng_state) % 256;
         
-        /* Alpha: Start subtle (Lower alpha usually evolves faster) */
+        // Alpha: Start subtle (Lower alpha usually evolves faster becuase it can mixed easily with other triangles) 
         t->a = (xorshift32(&ind->rng_state) % 100) + 30; 
     }
 }
