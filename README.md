@@ -116,12 +116,8 @@ make NO_OMP=1
 ├── render.c/h      # Triangle rasterizer, fitness function
 ├── image.c/h       # Image loading and resizing (via stb)
 ├── Makefile
-├── stb_image.h            # (you provide) stb single-header
-└── stb_image_resize2.h    # (you provide) stb single-header
+├── stb_image.h            # (libary I've used)
+└── stb_image_resize2.h    # (libary I've used) 
 ```
 
 ---
-
-## License
-
-MIT — see [LICENSE](LICENSE)
