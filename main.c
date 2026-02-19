@@ -26,7 +26,6 @@ void create_child(const Individual* population, int pop_size, int index, int cur
                   int generations_stuck, int triangle_amount, Individual* child, const Image* target) {
     // Use local RNG to avoid thread collisions
     uint32_t thread_rng = population[index].rng_state ^ (uint32_t) current_generation;
-    /* TOURNAMENT SELECTION ("The Fight") */
     // Pick two randoms, winner stays
     int r1 = xorshift32(&thread_rng) % pop_size;
     int r2 = xorshift32(&thread_rng) % pop_size;
@@ -45,11 +44,9 @@ void create_child(const Individual* population, int pop_size, int index, int cur
 }
 
 void save_to_disk(const Individual* to_save, const Image* target, const char* output_file){
-    // 1. Render the winner to a final buffer
+    // Render the winner to a final buffer
     unsigned char* final_pixels = render_individual(to_save, target->width, target->height);
 
-    // 2. Create an SDL_Surface from these pixels
-    // SDL_CreateRGBSurfaceFrom allows us to wrap our raw pointer in an SDL structure
     SDL_Surface* save_surface = SDL_CreateRGBSurfaceFrom(
         final_pixels,
         target->width,
@@ -63,7 +60,7 @@ void save_to_disk(const Individual* to_save, const Image* target, const char* ou
     );
 
     if (save_surface) {
-        // 3. Save to disk
+        // Save to disk
         if (SDL_SaveBMP(save_surface, output_file) == 0) {
             printf("Successfully saved to '%s'\n", output_file);
         } else {
@@ -151,7 +148,7 @@ void update_display(SDL_Texture* texture, SDL_Renderer* renderer, const Image* t
     SDL_RenderCopy(renderer, texture, NULL, NULL);
     SDL_RenderPresent(renderer);
 
-    // Keep the OS happy so the window doesn't freeze or "Not Respond"
+    // Make sure the window doesn't freeze or "Not Respond"
     SDL_Event event;
     while (SDL_PollEvent(&event)) {
         if (event.type == SDL_QUIT) {
@@ -173,7 +170,7 @@ int main(int argc, char* argv[]) {
     printf("File: %s | Output: %s | Triangles: %d | Epsilon: %.5f\n", file_location, output_file, triangle_amount, epsilon);
     printf("Visualise: %s | Population: %d | Stuck threshold: %d\n", visualise ? "ON" : "OFF", pop_size, stuck_threshold);
 
-    // Loading the target image. Using 200px width is a good speed/quality balance.
+    // Loading the target image
     Image target;
     load_image(file_location, &target, scale_width);
 
@@ -231,7 +228,8 @@ int main(int argc, char* argv[]) {
             create_child(population, pop_size, i, gen, generations_stuck, triangle_amount, &child, &target);
             child.fitness = calculate_fitness(&child, &target);
 
-            // Thread-safe update: If the child is better than what's there, swap it.
+            // Thread-safe update: If the child is better than what's there, swap it.  
+            // Because mabey population[i] is used in creation of another child in the parallet evolution.
             // If we are stuck, we swap anyway to force new "ideas" into the pool.
             #pragma omp critical
             {
@@ -244,7 +242,7 @@ int main(int argc, char* argv[]) {
             }
         }
 
-        // 4. Update the View every 100 generations
+        // 4. Update the screen every 100 generations
         if (visualise && gen % 100 == 0) {
             unsigned char* pixels = render_individual(&population[0], target.width, target.height);
             update_display(texture, renderer, &target, pixels);
