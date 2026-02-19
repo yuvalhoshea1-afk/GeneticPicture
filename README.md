@@ -2,8 +2,20 @@
 
 Approximate any image using a population of semi-transparent triangles, evolved over generations using a genetic algorithm.
 
-<img src="pictures/waterfall.jpg" alt="Evolution Example" width="200">
-<img src="pictures/genetic-waterfall.bmp" alt="Evolution Example" width="200">
+<table>
+<tr>
+  <td><img src="pictures/waterfall.jpg" width="200"></td>
+  <td><img src="pictures/colored-river.jpg" width="200"></td>
+  <td><img src="pictures/desert.jpg" width="200"></td>
+  <td><img src="pictures/beach.jpg" width="200"></td>
+</tr>
+<tr>
+  <td><img src="pictures/genetic-waterfall.bmp" width="200"></td>
+  <td><img src="pictures/genetic-colored-river.bmp" width="200"></td>
+  <td><img src="pictures/genetic-desert.bmp" width="200"></td>
+  <td><img src="pictures/genetic-beach.bmp" width="200"></td>
+</tr>
+</table>
 
 > *Top: target image. Bottom: evolved approximation after 100,000 generations.*
 
