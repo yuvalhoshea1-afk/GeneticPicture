@@ -77,7 +77,7 @@ make NO_OMP=1
 ## Usage
 
 ```bash
-./genetic [options]
+./genetic_picture [options]
 ```
 
 | Flag | Long form | Default | Description |
@@ -97,16 +97,16 @@ make NO_OMP=1
 
 ```bash
 # Basic usage
-./genetic -i photo.jpg
+./genetic_picture -i photo.jpg
 
 # Higher quality, slower
-./genetic -i photo.jpg -t 300 -p 50 -w 400 -g 100000
+./genetic_picture -i photo.jpg -t 300 -p 50 -w 400 -g 100000
 
 # Headless with custom output
-./genetic -i portrait.jpg -o portrait_out.bmp --no-vis
+./genetic_picture -i portrait.jpg -o portrait_out.bmp --no-vis
 
 # Tune stuck threshold if evolution keeps stalling
-./genetic -i photo.jpg -s 1500
+./genetic_picture -i photo.jpg -s 1500
 ```
 
 ---
