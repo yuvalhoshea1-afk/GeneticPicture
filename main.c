@@ -1,24 +1,24 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
+#include <stdbool.h>
 #include <SDL.h>
 #include "genetic.h"
 #include "image.h"
 #include "render.h"
-#include <string.h>
-#include <stdbool.h>
 
 
+int cmp_individual_fitness(const void* a, const void* b) {
+    Individual* ind1 = (Individual*) a;
+    Individual* ind2 = (Individual*) b;
+
+    if (ind1->fitness > ind2->fitness) return 1;
+    if (ind1->fitness < ind2->fitness) return -1;
+    return 0;
+}
 void sort_population(Individual* population, int pop_size) {
-    for (int i = 0; i < pop_size - 1; i++) {
-        for (int j = 0; j < pop_size - i - 1; j++) {
-            if (population[j].fitness > population[j+1].fitness) {
-                Individual temp = population[j];
-                population[j] = population[j+1];
-                population[j+1] = temp;
-            }
-        }
-    }
+    qsort(population, pop_size, sizeof(Individual), cmp_individual_fitness);
 }
 
 
@@ -209,6 +209,14 @@ int main(int argc, char* argv[]) {
             printf("Target reached! Fitness: %f\n", population[0].fitness);
             break; 
         }
+
+        if (generations_stuck > 10000) {
+            printf("We got stuck after %d generations\n", gen-10000);
+            printf("We've achieved fitness: %f\n", population[0].fitness);
+            printf("It is probably the optimum for given width AND/OR number of triangles (But I am not promising it :)\n");
+            break;
+        }
+
         // 1. Sort the population (Best fitness at index 0)
         sort_population(population, pop_size);
 
