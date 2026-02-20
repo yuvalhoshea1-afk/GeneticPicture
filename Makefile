@@ -2,7 +2,7 @@
 # Makefile for GeneticPicture project
 # ==================================================
 
-TARGET = genetic_art
+TARGET = genetic_picture
 
 # Sources
 SRCS = main.c image.c render.c genetic.c
