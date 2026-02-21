@@ -85,7 +85,7 @@ void draw_triangle(unsigned char* pixels,
 /* ========= RENDER INDIVIDUAL ========= */
 unsigned char* render_individual(const Individual* ind, int width, int height)
 {
-    unsigned char* buffer = (unsigned char*)calloc(width*height*3, 1);
+    unsigned char* buffer = (unsigned char*)calloc(width*height*3, sizeof(unsigned char));
     if (!buffer) return NULL;
 
     for (int i = 0; i < ind->num_triangles; i++) {
