@@ -100,7 +100,7 @@ double calculate_fitness(const Individual* individual, const Image* target)
 {
     int amnt = target->width * target->height * 3;
     unsigned char* buffer = render_individual(individual, target->width, target->height);
-    if (!buffer) return 1e30;
+    if (!buffer) return 1.0;
 
     uint64_t error = 0;
     #pragma omp parallel for reduction(+:error) schedule(static)
