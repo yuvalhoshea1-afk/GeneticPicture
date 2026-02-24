@@ -1,9 +1,10 @@
-#include "render.h"
-#include "image.h"
-#include "genetic.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <omp.h>
+#include "render.h"
+#include "image.h"
+#include "genetic.h"
+
 
 /* ========= HELPERS ========= */
 static void sort_vertices(int* x, int* y) {
